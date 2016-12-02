@@ -31,7 +31,7 @@ public:
 	vector<double> averageHist;
 	vector<double> y;
 	vector<Perceptron> ClusterPerceptron;
-	multiset<Cluster> oldClusters;
+	vector<Cluster> oldClusters;
 };
 
 #endif //CS253_PA5_CLUSTER_H
