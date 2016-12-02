@@ -4,33 +4,24 @@
 
 #include "Image.h"
 
-bool Image::ReadFileNames (istream& inFile) {
+void Image::ReadFileNames (istream& inFile) {
 	string fileName;
-	regex txt_regex("class[[:digit:]]+_[[:digit:]]+\\.pgm");
+
 	while (inFile >> fileName) {
-		if (!regex_match ( fileName.begin(), fileName.end(), txt_regex )) return false;	//ensure that file matches format 'class[0-9]+_[0-9]+.pgm'
 		files.push_back(fileName);
 		totalFiles++;
 	}
-
-	//check if istream inFile failed
-	if (inFile.fail() && !inFile.eof()) return false;
-
-	if (totalFiles < 2) return false;
-
-	return true;
 }
 
-bool Image::CreateHistograms() {
+void Image::CreateHistograms() {
 	normHistograms.reserve(totalFiles);
 	for (int i = 0; i < totalFiles; ++i) {
 		Histogram histogram;
 		ifstream fileToRead(files[i]);
-		if (!histogram.Read(fileToRead)) return false;
+		histogram.Read(fileToRead);
 		histogram.Normalize();
 		normHistograms.push_back(histogram);
 	}
-	return true;
 }
 
 void Image::CreateImages() {
@@ -46,13 +37,4 @@ void Image::CreateImages() {
 		image.imageHist = normHistograms[i].normalized;
 		images.push_back(image);
 	}
-}
-
-bool Image::CheckN(int N) {
-	int count = 0;
-	for (int i = 0; i < (int) images.size(); ++i) {
-		if (N == images[i].imageClass) count++;
-	}
-	if (count == 0) return false;
-	return true;
 }

@@ -14,7 +14,7 @@ using std::multiset;
 
 class Cluster : public Perceptron {
 public:
-	bool ClusterImages(vector<Image>& images, int k, const vector<Perceptron>& perceptrons);
+	void ClusterImages(vector<Image>& images, int k, const vector<Perceptron>& perceptrons);
 	void OutputCluster(const vector<Cluster>& clusters);
 
 	vector<double> CreateAverageHist(const vector<Image>& images);

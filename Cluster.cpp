@@ -5,10 +5,8 @@
 #include "Cluster.h"
 #include "Image.h"
 
-bool Cluster::ClusterImages(vector<Image>& images, int k, const vector<Perceptron>& perceptrons) {
+void Cluster::ClusterImages(vector<Image>& images, int k, const vector<Perceptron>& perceptrons) {
 	ClusterPerceptron = perceptrons;
-	if (k == 0) return false;
-	if ((int) images.size() < k) return false;
 	for (int i = 0; i < (int) images.size(); ++i) {
 		Cluster cluster = Cluster();
 		cluster.clusterOfImages.push_back(images[i]);	//create a cluster for each image
@@ -18,13 +16,11 @@ bool Cluster::ClusterImages(vector<Image>& images, int k, const vector<Perceptro
 	}
 	if (k == (int) oldClusters.size()) {
 		OutputCluster(oldClusters);	//no clustering to be done
-		return true;
 	}
 	else FixClusters(k, (int) oldClusters.size());
 
 	OutputCluster(oldClusters);
 
-	return true;
 }
 
 void Cluster::FixClusters(int clustersToGet, int numOfCurrentClusters) {

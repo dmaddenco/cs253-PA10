@@ -27,7 +27,7 @@ using std::regex_match;
 class Histogram {
 public:
 	//read file that is passed
-	bool Read(istream& inFile);
+	void Read(istream& inFile);
 	//will check what "bin" the value falls into and increase count
 	void Occurrence(int value);
 

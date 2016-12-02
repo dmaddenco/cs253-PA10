@@ -12,7 +12,7 @@
 
 class Perceptron {
 public:
-	bool GetClasses(vector<Image> images);
+	void GetClasses(vector<Image> images);
 	void CreateNPerceptron(vector<Image> images);
 	double ComputeY(double b, vector<double> w, vector<double> hist);
 	inline double UpdateB(double y, double b, double d) { return (b + (d - y)); }
