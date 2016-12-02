@@ -9,6 +9,9 @@
 #include "Histogram.h"
 #include "Perceptron.h"
 
+#include <set>
+using std::multiset;
+
 class Cluster : public Perceptron {
 public:
 	bool ClusterImages(vector<Image>& images, int k, const vector<Perceptron>& perceptrons);
@@ -24,12 +27,11 @@ public:
 	double Similarity(const vector<double>& y1, const vector<double>& y2);
 
 	vector<Image> clusterOfImages;
-	vector<Cluster> allClusters;
 
 	vector<double> averageHist;
 	vector<double> y;
 	vector<Perceptron> ClusterPerceptron;
-	vector<Cluster> oldClusters;
+	multiset<Cluster> oldClusters;
 };
 
 #endif //CS253_PA5_CLUSTER_H

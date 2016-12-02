@@ -14,7 +14,7 @@ bool Cluster::ClusterImages(vector<Image>& images, int k, const vector<Perceptro
 		cluster.clusterOfImages.push_back(images[i]);	//create a cluster for each image
 		cluster.averageHist = CreateAverageHist(cluster.clusterOfImages);	//create average histogram for each image
 		cluster.y = CreateNY(cluster.averageHist);
-		oldClusters.push_back(cluster);	//stores all clusters
+		oldClusters.insert(cluster);	//stores all clusters
 	}
 	if (k == (int) oldClusters.size()) {
 		OutputCluster(oldClusters);	//no clustering to be done
