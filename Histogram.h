@@ -20,9 +20,6 @@ using std::vector;
 using std::strcmp;
 #include <string>
 using std::string;
-#include <regex>
-using std::regex;
-using std::regex_match;
 
 class Histogram {
 public:
