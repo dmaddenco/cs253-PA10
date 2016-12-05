@@ -16,6 +16,9 @@ using std::cerr;
 #include <fstream>
 using std::ifstream;
 
+#include <thread>
+using std::thread;
+
 int main(int argc, char* argv[]) {
 
 	ifstream inFile1(argv[1]);
@@ -26,21 +29,29 @@ int main(int argc, char* argv[]) {
 	training.ReadFileNames(inFile1);
 	test.ReadFileNames(inFile2);
 
-	training.CreateHistograms();
-	test.CreateHistograms();
+	thread tH1(&Image::CreateHistograms, &training);
+	thread tH2(&Image::CreateHistograms, &test);
 
-	training.CreateImages();
-	test.CreateImages();
+    tH1.join();
+    tH2.join();
+
+    thread tC1(&Image::CreateImages, &training);
+    thread tC2(&Image::CreateImages, &test);
+
+    tC1.join();
+    tC2.join();
 
 	Perceptron perceptron;
 
-	perceptron.GetClasses(training.images);
+    thread tP1(&Perceptron::GetClasses, &perceptron, training.images);
+    tP1.join();
 
-	Cluster cluster;
+    thread tP2(&Perceptron::CreateNPerceptron, &perceptron);
+    tP2.join();
 
-	perceptron.CreateNPerceptron(training.images);
+    Cluster cluster;
 
-	cluster.ClusterImages(test.images, atoi(argv[3]), perceptron.perceptrons);
+    cluster.ClusterImages(test.images, atoi(argv[3]), perceptron.perceptrons);
 
 	return 0;
 }

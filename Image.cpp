@@ -7,7 +7,7 @@
 void Image::ReadFileNames (istream& inFile) {
 	string fileName;
 
-	while (inFile >> fileName) {
+	while (inFile >> fileName && !inFile.fail()) {
 		files.push_back(fileName);
 		totalFiles++;
 	}
@@ -30,7 +30,6 @@ void Image::CreateImages() {
 		Image image;
 		image.imageName = files[i];
 		string stringImageClass = files[i];
-
 		int found=files[i].find("_");
 		image.imageClass = atoi(stringImageClass.substr(5,(found-5)).c_str());
 		image.imageHist.reserve(64);

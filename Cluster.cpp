@@ -48,6 +48,18 @@ int Cluster::FindBestClusters() {
 	return MergeBestClusters(indexC1, indexC2);
 }
 
+double Cluster::Similarity(const vector<double>& y1, const vector<double>& y2) {
+    double epsilon = 0.001;	//if denominator of similarity == 0, add epsilon
+    double similarity = 0;
+    for (int i = 0; i < (int) y1.size(); ++i) {
+        double denominator = (y1[i] - y2[i]);
+//		if (denominator == 0) denominator += epsilon;
+        denominator+=epsilon;
+        similarity += (1/((denominator*denominator)));
+    }
+    return similarity;
+}
+
 int Cluster::MergeBestClusters(int indexC1, int indexC2) {
 
 	for (int i = 0; i < (int) oldClusters[indexC2].clusterOfImages.size(); ++i) {
@@ -59,25 +71,19 @@ int Cluster::MergeBestClusters(int indexC1, int indexC2) {
 	return (int) oldClusters.size();
 }
 
-double Cluster::Similarity(const vector<double>& y1, const vector<double>& y2) {
-	double epsilon = 0.001;	//if denominator of similarity == 0, add epsilon
-	double similarity = 0;
-	for (int i = 0; i < (int) y1.size(); ++i) {
-		double denominator = (y1[i] - y2[i]);
-//		if (denominator == 0) denominator += epsilon;
-		denominator+=epsilon;
-		similarity += (1/((denominator*denominator)));
-	}
-	return similarity;
-}
-
-void Cluster::OutputCluster(const vector<Cluster>& clusters) {
-	for (int i = 0; i < (int) clusters.size(); ++i) {
-		for (int j = 0; j < (int) clusters[i].clusterOfImages.size(); ++j) {
-			cout<<clusters[i].clusterOfImages[j].imageName<<" ";
-		}
-		cout<<endl;
-	}
+vector<double> Cluster::CreateAverageHist(const vector<Image>& images) {
+    vector<double> average;
+    average.reserve(64);
+    average.assign(64,0);
+    for (int i = 0; i < (int) images.size(); ++i) {
+        for (int j = 0; j < (int) images[i].imageHist.size(); ++j) {
+            average[j] += images[i].imageHist[j];
+        }
+    }
+    for (int k = 0; k < (int) average.size(); ++k) {
+        average[k] /= images.size();
+    }
+    return average;
 }
 
 vector<double> Cluster::CreateNY(const vector<double>& histogram) {
@@ -91,17 +97,11 @@ vector<double> Cluster::CreateNY(const vector<double>& histogram) {
 	return y;
 }
 
-vector<double> Cluster::CreateAverageHist(const vector<Image>& images) {
-	vector<double> average;
-	average.reserve(64);
-	average.assign(64,0);
-	for (int i = 0; i < (int) images.size(); ++i) {
-		for (int j = 0; j < (int) images[i].imageHist.size(); ++j) {
-			average[j] += images[i].imageHist[j];
-		}
-	}
-	for (int k = 0; k < (int) average.size(); ++k) {
-		average[k] /= images.size();
-	}
-	return average;
+void Cluster::OutputCluster(const vector<Cluster>& clusters) {
+    for (int i = 0; i < (int) clusters.size(); ++i) {
+        for (int j = 0; j < (int) clusters[i].clusterOfImages.size(); ++j) {
+            cout<<clusters[i].clusterOfImages[j].imageName<<" ";
+        }
+        cout<<endl;
+    }
 }
