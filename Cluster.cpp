@@ -7,6 +7,7 @@
 
 void Cluster::ClusterImages(vector<Image>& images, int k, const vector<Perceptron>& perceptrons) {
 	ClusterPerceptron = perceptrons;
+	oldClusters.reserve(images.size());
 	for (int i = 0; i < (int) images.size(); ++i) {
 		Cluster cluster = Cluster();
 		cluster.clusterOfImages.push_back(images[i]);	//create a cluster for each image
