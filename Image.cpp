@@ -22,6 +22,7 @@ void Image::CreateHistograms() {
 		histogram.Normalize();
 		normHistograms.push_back(histogram);
 	}
+	CreateImages();
 }
 
 void Image::CreateImages() {

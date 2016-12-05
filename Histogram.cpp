@@ -8,20 +8,16 @@ void Histogram::Read (istream& inFile) {
 	char p2;
 	inFile.get(p2);
 	inFile.get(p2);
-	//set to -1 as -1 is not a valid int
+
 	int val;
 	inFile >> width >> height >> maxVal;
 
 	maxInts = width*height;
 	//assign all bins in count to 0
 	count.assign(maxInts,0);
-	//while will run as long as inFile can extract into integer and inFile did not fail
-	int allInts = 0;
 	while (inFile >> val && !inFile.fail()) {
 		//increase occurrence count for respective box
 		Occurrence(val);
-		//save value in vector
-		allInts++;
 	}
 }
 

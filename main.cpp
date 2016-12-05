@@ -32,21 +32,16 @@ int main(int argc, char* argv[]) {
     test.ReadFileNames(inFile2);
 
     thread tH1(&Image::CreateHistograms, &training);
-    thread tH2(&Image::CreateHistograms, &test);
+	thread tH2(&Image::CreateHistograms, &test);
 
-    tH1.join();
-    tH2.join();
+	tH2.join();
+	tH1.join();
 
-    thread tC1(&Image::CreateImages, &training);
-    tC1.join();
+	thread tP1(&Perceptron::GetClasses, &perceptron, training.images);
+	tP1.join();
 
-    thread tP1(&Perceptron::GetClasses, &perceptron, training.images);
-    tP1.join();
     thread tP2(&Perceptron::CreateNPerceptron, &perceptron);
     tP2.join();
-
-    thread tC2(&Image::CreateImages, &test);
-    tC2.join();
 
     cluster.ClusterImages(test.images, atoi(argv[3]), perceptron.perceptrons);
 
