@@ -12,10 +12,9 @@ using std::ifstream;
 
 class Image : public Histogram {
 public:
-	bool ReadFileNames(istream& inFile);	//read file names
-	bool CreateHistograms();	//creates histograms
+	void ReadFileNames(istream& inFile);	//read file names
+	void CreateHistograms();	//creates histograms
 	void CreateImages();
-	bool CheckN(int N);
 
 	vector<string> files;	//file names that contain images
 	vector<Histogram> normHistograms;	//holds all valid histograms
